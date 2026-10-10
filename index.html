@@ -12,6 +12,9 @@
         --accent: #5a4632;
         --accent-light: #8a7355;
         --line: #ddd4c4;
+        --ios: #1f5f8b;
+        --ios-tint: #e8f1f8;
+        --highlight: #fff1b8;
     }
 
     * {
@@ -35,7 +38,7 @@
 
     .top-mark {
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
     }
 
     .brand {
@@ -56,24 +59,67 @@
         font-style: italic;
     }
 
+    .one-button-rule {
+        max-width: 420px;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: var(--ink);
+        background: var(--highlight);
+        border: 1px solid #e6d28a;
+        border-radius: 3px;
+        padding: 0.7rem 1rem;
+        margin-bottom: 2.5rem;
+    }
+
     .actions {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.6rem;
+        gap: 2rem;
         margin-bottom: 3rem;
+        width: 100%;
+    }
+
+    .option {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        width: 100%;
+        max-width: 340px;
+    }
+
+    .returning-note {
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--accent-light);
+    }
+
+    .returning-note strong {
+        color: var(--ink);
+    }
+
+    .returning-note .ios-emph {
+        color: var(--ios);
+        font-weight: bold;
     }
 
     .read-button {
+        display: block;
+        width: 100%;
         font-family: inherit;
         font-size: 1.05rem;
-        padding: 0.85rem 2.4rem;
+        line-height: 1.4;
+        padding: 0.85rem 1.5rem;
         border: 1px solid var(--accent);
         background-color: transparent;
         color: var(--accent);
         border-radius: 3px;
         cursor: pointer;
         letter-spacing: 0.02em;
+        text-align: center;
+        text-decoration: none;
         transition: background-color 0.2s ease, color 0.2s ease;
     }
 
@@ -82,16 +128,22 @@
         color: var(--paper);
     }
 
-    .returning-note {
-        max-width: 320px;
-        text-align: center;
-        font-size: 0.8rem;
-        color: var(--accent-light);
-        margin-top: 0.25rem;
+    .read-button.ios {
+        border-color: var(--ios);
+        color: var(--ios);
+        background-color: var(--ios-tint);
     }
 
-    .spacer {
-        height: 1rem;
+    .read-button.ios:hover {
+        background-color: var(--ios);
+        color: #fff;
+    }
+
+    .read-button:focus-visible,
+    .auth-continue-btn:focus-visible,
+    .auth-signin-btn:focus-visible {
+        outline: 2px solid var(--ios);
+        outline-offset: 2px;
     }
 
     .info {
@@ -165,7 +217,11 @@
         display: block;
         margin-top: 0.75rem;
         font-weight: bold;
-        color: #a3402f;
+        color: var(--ink);
+        background: var(--highlight);
+        border-left: 4px solid #d4a72c;
+        padding: 0.5rem 0.7rem;
+        border-radius: 2px;
     }
 
     .auth-popup-buttons {
@@ -213,13 +269,10 @@
         body { padding: 1.5rem 1.25rem; }
         .brand { font-size: 1.7rem; }
         .read-button {
-            width: 100%;
-            max-width: 320px;
             font-size: 0.95rem;
-            padding: 0.85rem 1.5rem;
-            text-align: center;
+            padding: 0.85rem 1.25rem;
         }
-        .returning-note { max-width: 280px; font-size: 0.75rem; }
+        .returning-note { font-size: 0.75rem; }
         .info { font-size: 0.88rem; }
         .auth-popup { width: 95%; padding: 1.5rem; }
         .auth-popup-title { font-size: 1.05rem; }
@@ -233,14 +286,19 @@
         <div class="powered-by">Powered by Enjoy Claude &amp; Skills Verification</div>
     </div>
 
+    <div class="one-button-rule">Pick one button and stick with it every time you return.</div>
+
     <div class="actions">
-        <button class="read-button" onclick="showAuthPopup()">Start Reading after Authentication</button>
-        <div class="returning-note">Resolves 401 error issues.</div>
+        <div class="option">
+            <div class="returning-note">Requires Google login. Best for most Android devices and Google Chrome browsers.</div>
+            <button class="read-button" onclick="showAuthPopup()">Start Reading after Authentication</button>
+            <div class="returning-note">Resolves 401 error issues.</div>
+        </div>
 
-        <div class="spacer"></div>
-
-        <a href="https://noteslibrary.org/read" class="read-button" style="text-decoration:none; display:inline-block;">Start Reading Now</a>
-        <div class="returning-note">Only use this button if you are a returning reader. Otherwise, you'll be served Google's 401 error page.</div>
+        <div class="option">
+            <div class="returning-note">Does not require any Google login or authentication. Best for <span class="ios-emph">iOS</span>, <span class="ios-emph">Safari</span> and other Android browsers.</div>
+            <a href="https://noteslibrary.org/read-ios" class="read-button ios">Start Reading Now</a>
+        </div>
     </div>
 
     <div class="info">
@@ -250,11 +308,11 @@
 
     <div class="auth-popup-overlay" id="authPopup">
         <div class="auth-popup">
-            <button class="auth-popup-close" onclick="closeAuthPopup()">&times;</button>
+            <button class="auth-popup-close" onclick="closeAuthPopup()" aria-label="Close">&times;</button>
             <div class="auth-popup-title">Sign in required</div>
             <div class="auth-popup-content">
                 If you have previously been served a "401. That's an error." Google page, use the "Sign in with Google" button, which will redirect you to sign in with Google for both your browser and the application. This resolves the 401 error in almost all cases. Afterwards return and use the continue button. If it doesn't work on the first try, try a different browser — preferably a laptop using Chrome.
-                <span class="warn">If you are a returning user, simply press Continue.</span>
+                <span class="warn">If you have logged in before, simply press Continue.</span>
             </div>
             <div class="auth-popup-buttons">
                 <button class="auth-continue-btn" onclick="continueToDestination()">Continue</button>
